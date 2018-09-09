@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "delaunator.h"
-#include "json-helpers.h"
 
 // test data
 #include "vertex_points.h"

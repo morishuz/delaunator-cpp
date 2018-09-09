@@ -1,11 +1,11 @@
 
 #include <chrono>
-#include "delaunator.h"
-#include "json-helpers.h"
 #include <string>
 #include <vector>
 #include <iostream>
 #include <random>
+
+#include "delaunator.h"
 
 using namespace std;
 int main(int, char* argv[])
