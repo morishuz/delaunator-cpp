@@ -29,8 +29,10 @@ int main(int, char* argv[])
         coords.push_back(y);
     }
     
+    Delaunator dl;
     auto t_start = chrono::high_resolution_clock::now();
-    Delaunator delaunator(coords);
+    
+    dl.triangulate(coords);
     auto t_end = chrono::high_resolution_clock::now();
 
     auto milliseconds = chrono::duration_cast<chrono::milliseconds>(t_end - t_start).count();
@@ -39,7 +41,7 @@ int main(int, char* argv[])
     std::cout << "  runtime: " << milliseconds << " ms or " << milliseconds / 1000.0 << " sec " <<  std::endl;
     std::cout << std::endl;
     std::cout << "  number of vertices: " << (coords.size() / 2) << std::endl;
-    std::cout << "  number of triangles: " <<( delaunator.triangles.size() / 3) << std::endl;
+    std::cout << "  number of triangles: " <<( dl.triangles.size() / 3) << std::endl;
     std::cout << std::endl;
 
     return 0;

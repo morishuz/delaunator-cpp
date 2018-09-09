@@ -17,25 +17,21 @@ struct DelaunatorPoint {
 class Delaunator{
     public:
     
-        Delaunator(const std::vector<double>& in_coords);
+        bool triangulate(const std::vector<double>& coords);
     
         std::vector<uint64_t>  triangles;
         std::vector<int64_t>   halfedges;
     
     private:
     
-        Delaunator();
-    
         double      m_center_x;
         double      m_center_y;
         int64_t     m_hash_size;
         int64_t     m_hull_index;
     
-        std::vector<int>                m_hash;
+        std::vector<int64_t>            m_hash;
         std::vector<DelaunatorPoint>    m_hl;
     
-        double                          m_epsilon;
- 
     private:
     
         double      pseudo_angle(const double dx, const double dy);

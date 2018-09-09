@@ -11,7 +11,10 @@
 using namespace std;
 
 namespace {
-    const double max_double = numeric_limits<double>::max();
+    
+    constexpr double max_double = numeric_limits<double>::max();
+    constexpr double epsilon    = 2.22045e-16; //std::pow(2,-52);
+    
     double dist(
         const double &ax,
         const double &ay,
@@ -129,13 +132,19 @@ namespace {
     }
 }
 
-Delaunator::Delaunator()
+bool Delaunator::triangulate(const vector<double>& coords)
 {
-    m_epsilon = std::pow(2,-52);
-}
-
-Delaunator::Delaunator(const vector<double>& coords) : Delaunator()
-{
+    triangles.clear();
+    halfedges.clear();
+    
+    m_hash.clear();
+    m_hl.clear();
+    
+    m_center_x      = 0;
+    m_center_y      = 0;
+    m_hash_size     = 0;
+    m_hull_index    = -1;
+    
     const int64_t n = coords.size() >> 1;
     double max_x = -1 * max_double;
     double max_y = -1 * max_double;
@@ -235,7 +244,7 @@ Delaunator::Delaunator(const vector<double>& coords) : Delaunator()
 
     m_hash_size = ceil(sqrt(n));
     m_hash.reserve(m_hash_size);
-    for (int i = 0; i < m_hash_size; i++) m_hash.push_back(-1);
+    for (int64_t i = 0; i < m_hash_size; i++) m_hash.push_back(-1);
 
     m_hl.reserve(coords.size());
 
@@ -266,7 +275,7 @@ Delaunator::Delaunator(const vector<double>& coords) : Delaunator()
         const double x = coords[2 * i];
         const double y = coords[2 * i + 1];
 
-        if (k > 0 && std::abs(x - xp) <= m_epsilon && std::abs(y - yp) <= m_epsilon) continue;
+        if (k > 0 && std::abs(x - xp) <= epsilon && std::abs(y - yp) <= epsilon) continue;
         
         xp = x;
         yp = y;
@@ -368,6 +377,7 @@ Delaunator::Delaunator(const vector<double>& coords) : Delaunator()
         hash_edge(m_hl[e].prev);
     }
 
+    return true;
 };
 
 int64_t Delaunator::remove_node(int64_t node) {

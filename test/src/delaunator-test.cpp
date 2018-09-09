@@ -27,8 +27,8 @@ TEST_CASE("regular grid")
             points.push_back(r);
         }
     }
-    
-     Delaunator dn(points);
+    Delaunator dn;
+    dn.triangulate(points);
     
      std::cout << "number of triangles: " << dn.triangles.size()/3 << std::endl;
      std::cout << "number of vertices: " << points.size()/2 << std::endl;
@@ -40,7 +40,8 @@ TEST_CASE("triangles match JS version ouput", "[Delaunator]")
     std::vector<double> vertex_list_big;
     unittests::init_vertex_list(vertex_list_big);
     
-    Delaunator dn(vertex_list_big);
+    Delaunator dn;
+    dn.triangulate(vertex_list_big);
     
     std::vector<int> tri_big;
     unittests::init_triangle_list(tri_big);
