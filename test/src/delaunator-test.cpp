@@ -48,13 +48,7 @@ TEST_CASE("triangles match JS version ouput", "[Delaunator]")
     
     CHECK(dn.triangles.size() == tri_big.size());
     for(int i = 0; i < dn.triangles.size(); i++)
-    {
-
-        if(dn.triangles[i] != tri_big[i])
-        {
-            std::cout << "faile at i: " << i << std::endl;
-        }
-        
+    {        
         CHECK(dn.triangles[i] == tri_big[i]);
     }
     
