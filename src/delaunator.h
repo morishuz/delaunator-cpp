@@ -14,7 +14,8 @@ struct DelaunatorPoint {
     bool removed;
 };
 
-class Delaunator{
+class Delaunator
+{
     public:
     
         bool triangulate(const std::vector<double>& coords);
