@@ -14,7 +14,7 @@ int main(int, char* argv[])
     
     std::vector<double> coords;
 
-    int num_of_vertices = 100000000;
+    int num_of_vertices = 1000000;
     
     std::mt19937 rng;
     rng.seed(std::random_device()());
