@@ -4,21 +4,43 @@
 #include "json-helpers.h"
 #include <string>
 #include <vector>
+#include <iostream>
+#include <random>
 
 using namespace std;
-int main(int, char* argv[]) {
-    string points_str = json_helpers::read_file("./test-files/osm-nodes-45331-epsg-3857.geojson");
-    const vector<double> coords = json_helpers::get_geo_json_points(points_str);
+int main(int, char* argv[])
+{
+    std::cout << "benchmark: " <<  std::endl;
+    
+    std::vector<double> coords;
 
+    int num_of_vertices = 1000000;
+    
+    std::mt19937 rng;
+    rng.seed(std::random_device()());
+    std::uniform_int_distribution<std::mt19937::result_type> dist(0,1000); // distribution in range [1, 6]
+    
+    for(int i = 0; i < num_of_vertices; i++)
+    {
+        double x = dist(rng);
+        double y = dist(rng);
+        
+        coords.push_back(x);
+        coords.push_back(y);
+    }
+    
     auto t_start = chrono::high_resolution_clock::now();
     Delaunator delaunator(coords);
     auto t_end = chrono::high_resolution_clock::now();
 
     auto milliseconds = chrono::duration_cast<chrono::milliseconds>(t_end - t_start).count();
 
-    printf("coords=%lu \n", coords.size() / 2);
-    printf("milliseconds=%lld \n", milliseconds);
-    printf("triangles=%lu \n", delaunator.triangles.size());
+    std::cout << std::endl;
+    std::cout << "  runtime: " << milliseconds << " ms or " << milliseconds / 1000.0 << " sec " <<  std::endl;
+    std::cout << std::endl;
+    std::cout << "  number of vertices: " << (coords.size() / 2) << std::endl;
+    std::cout << "  number of triangles: " <<( delaunator.triangles.size() / 3) << std::endl;
+    std::cout << std::endl;
 
     return 0;
 }
